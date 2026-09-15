@@ -10,7 +10,7 @@ export interface ReponseRecherche {
   Search?: FilmOmdb[];
   totalResults?: string;
   Response: 'True' | 'False';
-  Error?: string; 
+  Error?: string;
 }
 
 export const creerUrlFilm = (nomFilm: string) => {
