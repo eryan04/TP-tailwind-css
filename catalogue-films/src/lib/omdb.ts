@@ -13,6 +13,10 @@ export interface ReponseRecherche {
   Error?: string;
 }
 
-export function construireUrlRecherche(terme: string): string {
-  return `https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_KEY}&s=${encodeURIComponent(terme)}`;
-}
+export const creerUrlFilm = (nomFilm: string) => {
+  const cleApi = import.meta.env.VITE_OMDB_KEY;
+  const titre = encodeURIComponent(nomFilm);
+ 
+  return `https://www.omdbapi.com/?apikey=${cleApi}&s=${titre}`;
+};
+ 

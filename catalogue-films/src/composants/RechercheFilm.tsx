@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CarteFilm } from './CarteFilm';
 import {
-	construireUrlRecherche,
+	creerUrlFilm,
 	type FilmOmdb,
 	type ReponseRecherche,
 } from '../lib/omdb';
@@ -29,7 +29,7 @@ export function RechercheFilms() {
 			setErreur(null);
 
 			try {
-				const reponse = await fetch(construireUrlRecherche(termeNettoye), {
+				const reponse = await fetch(creerUrlFilm(termeNettoye), {
 					signal: controleur.signal,
 				});
 
