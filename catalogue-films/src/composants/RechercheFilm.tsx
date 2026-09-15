@@ -1,31 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Carte } from './Carte';
+import { CarteFilm } from './CarteFilm';
 import {
 	construireUrlRecherche,
 	type FilmOmdb,
 	type ReponseRecherche,
 } from '../lib/omdb';
-
-function CarteFilm({ film }: { film: FilmOmdb }) {
-	return (
-		<Carte titre={film.Title} sousTitre={`${film.Year} — ${film.Type}`}>
-			<div className="space-y-4">
-				{film.Poster !== 'N/A' ? (
-					<img
-						src={film.Poster}
-						alt={`Affiche de ${film.Title}`}
-						className="aspect-[2/3] w-full rounded-lg object-cover"
-					/>
-				) : (
-					<div className="flex aspect-[2/3] items-center justify-center rounded-lg bg-slate-200 text-center text-sm text-slate-500">
-						Affiche indisponible
-					</div>
-				)}
-				<p className="text-sm text-slate-500">Identifiant IMDb : {film.imdbID}</p>
-			</div>
-		</Carte>
-	);
-}
 
 export function RechercheFilms() {
 	const [terme, setTerme] = useState('');
@@ -34,6 +13,8 @@ export function RechercheFilms() {
 	const [erreur, setErreur] = useState<string | null>(null);
 
 	useEffect(() => {
+		const controleur = new AbortController();
+
 		const rechercher = async () => {
 			const termeNettoye = terme.trim();
 
@@ -48,7 +29,9 @@ export function RechercheFilms() {
 			setErreur(null);
 
 			try {
-				const reponse = await fetch(construireUrlRecherche(termeNettoye));
+				const reponse = await fetch(construireUrlRecherche(termeNettoye), {
+					signal: controleur.signal,
+				});
 
 				if (!reponse.ok) {
 					throw new Error(`Erreur HTTP ${reponse.status}`);
@@ -61,15 +44,21 @@ export function RechercheFilms() {
 				}
 
 				setFilms(donnees.Search ?? []);
+				setChargement(false);
 			} catch (e: unknown) {
+				if (e instanceof Error && e.name === 'AbortError') {
+					return;
+				}
+
 				setFilms([]);
 				setErreur(e instanceof Error ? e.message : 'Erreur inconnue');
-			} finally {
 				setChargement(false);
 			}
 		};
 
 		void rechercher();
+
+		return () => controleur.abort();
 	}, [terme]);
 
 	return (
