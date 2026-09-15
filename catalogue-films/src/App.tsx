@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormulaireInscription } from './composants/FormulaireInscription';
 import { ListeInscriptions } from './composants/ListeInscriptions';
+import { RechercheFilms } from './composants/RechercheFilm';
 import type {
   Inscription,
   InscriptionEnregistree,
@@ -40,6 +41,8 @@ function App() {
             Remplissez le formulaire pour ajouter une inscription validée à la liste.
           </p>
         </header>
+
+        <RechercheFilms />
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start">
           <FormulaireInscription onInscription={ajouterInscription} />
