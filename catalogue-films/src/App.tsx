@@ -51,7 +51,7 @@ function App() {
             <div>
               <h2 className="text-2xl font-semibold text-slate-900">Inscriptions validées</h2>
               <p className="mt-1 text-sm text-slate-500">
-                Les mots de passe ne sont jamais conservés.
+                Les mots de passe ne sont jamais conservés. 
               </p>
             </div>
             <ListeInscriptions
