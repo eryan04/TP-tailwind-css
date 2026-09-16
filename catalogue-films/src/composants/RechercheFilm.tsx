@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { CarteFilm } from './CarteFilm';
 import {
-	creerUrlFilm,
+	urlRecherche,
 	type FilmOmdb,
 	type ReponseRecherche,
 } from '../lib/omdb';
@@ -29,7 +30,7 @@ export function RechercheFilms() {
 			setErreur(null);
 
 			try {
-				const reponse = await fetch(creerUrlFilm(termeNettoye), {
+				const reponse = await fetch(urlRecherche(termeNettoye), {
 					signal: controleur.signal,
 				});
 
@@ -95,7 +96,9 @@ export function RechercheFilms() {
 				<ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
 					{films.map((film) => (
 						<li key={film.imdbID}>
-							<CarteFilm film={film} />
+							<Link to={`/films/${film.imdbID}`} className="block h-full">
+								<CarteFilm film={film} />
+							</Link>
 						</li>
 					))}
 				</ul>
